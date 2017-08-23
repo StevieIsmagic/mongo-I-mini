@@ -16,10 +16,42 @@ server.get('/bears', (request,response) => {
     if (err) {
     response.status(STATUS_SERVER_ERROR);
     response.json(err);
+    } else {
+    response.json(bears);
     }
 	});
 });
 
+server.get('/bears/:id', (request, response) => {
+	const { id } = request.params;
+	Bear.findById(id, (err, bear) => {
+	  if (err) {
+	    response.status(STATUS_SERVER_ERROR);
+	    response.json(err);
+	  } else {
+      response.json.(bear);
+	  }
+	});
+});
+
+server.post('/bears', (request, response) => {
+	const { species, latinName } = request.body;
+	if (!species || !latinName) {
+	 response.status(STATUS_USER_ERROR);
+	 response.json({ error: 'Must provide species and latinName plz' });
+	 return;
+	}
+
+	const bear = new Bear({ species, latinName }):
+	bear.save((err) => {
+	  if (err) {
+	    response.status(STATUS_SERVER_ERROR);
+	    response.json(err);
+	  } else {
+	    response.json(bear);
+	  }
+	});
+});
 
 mongoose.promise = global.Promise;
 const connect = mongoose.connect(
@@ -31,9 +63,9 @@ connect.then(() => {
 	const port = 3000;
 	server.listen(port);
 	console.log(`Server listening on ${port}`);
-}, (err) => {
+}, 
+(err) => {
 	console.log('\n**************');
 	console.log('ERROR: couldn't connect to MongoDB. Do you have it running already?');
 	console.log('******************\n');
-}
 });
