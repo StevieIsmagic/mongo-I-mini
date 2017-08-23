@@ -25,3 +25,17 @@ const BearSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Bears', BearSchema);
+/* 'Bears' is the arbitrary reference name we give to our BearSchema 
+ * for it to be used in other files. If another model/schema wants to
+ * reference the BearSchema, 'Bear' will be the ref used:
+ * E.g., 
+ * const ZooSchema = new mongoose.Schema({
+ *  location: {
+ *   type: String,
+ *  },
+ *  bear: { 
+ *   type: Schema.ObjectId, // references a schema created in another file
+ *   ref: 'Bears' // ref of 
+ *  },
+ *  });
+ */

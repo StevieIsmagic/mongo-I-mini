@@ -12,8 +12,8 @@ const server = express();
 server.use(bodyParser.json());
 
 server.get('/bears', (req, res) => {
-  // .find() is a method you can use to read all the documents from the
-  // collection.
+// .find is a method you can use to read
+// all the documents from the collection
   Bear.find({}, (err, bears) => {
     if (err) {
       res.status(STATUS_SERVER_ERROR);
@@ -40,7 +40,7 @@ server.post('/bears', (req, res) => {
   const { species, latinName } = req.body;
   if (!species || !latinName) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide species and latinName' });
+    res.json({ error: 'Must provide species and latinName plz' });
     return;
   }
 
@@ -55,19 +55,19 @@ server.post('/bears', (req, res) => {
   });
 });
 
-mongoose.Promise = global.Promise;
+mongoose.promise = global.Promise;
 const connect = mongoose.connect(
   'mongodb://localhost/bears',
   { useMongoClient: true }
-);
+  );
 
 /* eslint no-console: 0 */
 connect.then(() => {
   const port = 3000;
   server.listen(port);
-  console.log(`Server Listening on ${port}`);
+  console.log(`Server listening on ${port}`);
 }, (err) => {
-  console.log('\n************************');
-  console.log("ERROR: Couldn't connect to MongoDB. Do you have it running?");
-  console.log('************************\n');
+  console.log('\n*********************');
+  console.log("ERROR: couldn't connect to MongoDB. Do you have it running?");
+  console.log('**********************\n');
 });
