@@ -5,4 +5,35 @@ cost mongoose = require('mongoose');
 const Bear = require('./models');
 
 const STATUS_USER_ERROR = 422;
-const STATUS
+const STATUS_SERVER_ERROR = 500;
+
+const server = express();
+
+server.use(bodyParser.json());
+
+server.get('/bears', (request,response) => {
+	Bear.find({}, (err, bears) => {
+    if (err) {
+    response.status(STATUS_SERVER_ERROR);
+    response.json(err);
+    }
+	});
+});
+
+
+mongoose.promise = global.Promise;
+const connect = mongoose.connect(
+'mongodb://localhost/bears',
+{ useMongoClient: true}
+);
+
+connect.then(() => {
+	const port = 3000;
+	server.listen(port);
+	console.log(`Server listening on ${port}`);
+}, (err) => {
+	console.log('\n**************');
+	console.log('ERROR: couldn't connect to MongoDB. Do you have it running already?');
+	console.log('******************\n');
+}
+});
